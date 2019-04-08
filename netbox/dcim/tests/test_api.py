@@ -7,7 +7,7 @@ from dcim.constants import *
 from dcim.models import (
     Cable, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate, Device, DeviceBay,
     DeviceBayTemplate, DeviceRole, DeviceType, FrontPort, Interface, InterfaceTemplate, Manufacturer,
-    InventoryItem, Platform, PowerPort, PowerPortTemplate, PowerOutlet, PowerOutletTemplate, Rack, RackGroup,
+    InventoryItem, Platform, PowerPort, PowerPortTemplate, PowerOutlet, PowerOutletTemplate, Rack, pod,
     RackReservation, RackRole, RearPort, Region, Site, VirtualChassis,
 )
 from ipam.models import IPAddress, VLAN
@@ -252,7 +252,7 @@ class SiteTest(APITestCase):
         self.assertEqual(Site.objects.count(), 2)
 
 
-class RackGroupTest(APITestCase):
+class podTest(APITestCase):
 
     def setUp(self):
 
@@ -260,27 +260,27 @@ class RackGroupTest(APITestCase):
 
         self.site1 = Site.objects.create(name='Test Site 1', slug='test-site-1')
         self.site2 = Site.objects.create(name='Test Site 2', slug='test-site-2')
-        self.rackgroup1 = RackGroup.objects.create(site=self.site1, name='Test Rack Group 1', slug='test-rack-group-1')
-        self.rackgroup2 = RackGroup.objects.create(site=self.site1, name='Test Rack Group 2', slug='test-rack-group-2')
-        self.rackgroup3 = RackGroup.objects.create(site=self.site1, name='Test Rack Group 3', slug='test-rack-group-3')
+        self.pod1 = pod.objects.create(site=self.site1, name='Test Pod 1', slug='test-pod-1')
+        self.pod2 = pod.objects.create(site=self.site1, name='Test Pod 2', slug='test-pod-2')
+        self.pod3 = pod.objects.create(site=self.site1, name='Test Pod 3', slug='test-pod-3')
 
-    def test_get_rackgroup(self):
+    def test_get_pod(self):
 
-        url = reverse('dcim-api:rackgroup-detail', kwargs={'pk': self.rackgroup1.pk})
+        url = reverse('dcim-api:pod-detail', kwargs={'pk': self.pod1.pk})
         response = self.client.get(url, **self.header)
 
-        self.assertEqual(response.data['name'], self.rackgroup1.name)
+        self.assertEqual(response.data['name'], self.pod1.name)
 
-    def test_list_rackgroups(self):
+    def test_list_pods(self):
 
-        url = reverse('dcim-api:rackgroup-list')
+        url = reverse('dcim-api:pod-list')
         response = self.client.get(url, **self.header)
 
         self.assertEqual(response.data['count'], 3)
 
-    def test_list_rackgroups_brief(self):
+    def test_list_pods_brief(self):
 
-        url = reverse('dcim-api:rackgroup-list')
+        url = reverse('dcim-api:pod-list')
         response = self.client.get('{}?brief=1'.format(url), **self.header)
 
         self.assertEqual(
@@ -288,78 +288,78 @@ class RackGroupTest(APITestCase):
             ['id', 'name', 'slug', 'url']
         )
 
-    def test_create_rackgroup(self):
+    def test_create_pod(self):
 
         data = {
-            'name': 'Test Rack Group 4',
-            'slug': 'test-rack-group-4',
+            'name': 'Test Pod 4',
+            'slug': 'test-pod-4',
             'site': self.site1.pk,
         }
 
-        url = reverse('dcim-api:rackgroup-list')
+        url = reverse('dcim-api:pod-list')
         response = self.client.post(url, data, format='json', **self.header)
 
         self.assertHttpStatus(response, status.HTTP_201_CREATED)
-        self.assertEqual(RackGroup.objects.count(), 4)
-        rackgroup4 = RackGroup.objects.get(pk=response.data['id'])
-        self.assertEqual(rackgroup4.name, data['name'])
-        self.assertEqual(rackgroup4.slug, data['slug'])
-        self.assertEqual(rackgroup4.site_id, data['site'])
+        self.assertEqual(pod.objects.count(), 4)
+        pod4 = pod.objects.get(pk=response.data['id'])
+        self.assertEqual(pod4.name, data['name'])
+        self.assertEqual(pod4.slug, data['slug'])
+        self.assertEqual(pod4.site_id, data['site'])
 
-    def test_create_rackgroup_bulk(self):
+    def test_create_pod_bulk(self):
 
         data = [
             {
-                'name': 'Test Rack Group 4',
-                'slug': 'test-rack-group-4',
+                'name': 'Test Pod 4',
+                'slug': 'test-pod-4',
                 'site': self.site1.pk,
             },
             {
-                'name': 'Test Rack Group 5',
-                'slug': 'test-rack-group-5',
+                'name': 'Test Pod 5',
+                'slug': 'test-pod-5',
                 'site': self.site1.pk,
             },
             {
-                'name': 'Test Rack Group 6',
-                'slug': 'test-rack-group-6',
+                'name': 'Test Pod 6',
+                'slug': 'test-pod-6',
                 'site': self.site1.pk,
             },
         ]
 
-        url = reverse('dcim-api:rackgroup-list')
+        url = reverse('dcim-api:pod-list')
         response = self.client.post(url, data, format='json', **self.header)
 
         self.assertHttpStatus(response, status.HTTP_201_CREATED)
-        self.assertEqual(RackGroup.objects.count(), 6)
+        self.assertEqual(pod.objects.count(), 6)
         self.assertEqual(response.data[0]['name'], data[0]['name'])
         self.assertEqual(response.data[1]['name'], data[1]['name'])
         self.assertEqual(response.data[2]['name'], data[2]['name'])
 
-    def test_update_rackgroup(self):
+    def test_update_pod(self):
 
         data = {
-            'name': 'Test Rack Group X',
-            'slug': 'test-rack-group-x',
+            'name': 'Test Pod X',
+            'slug': 'test-pod-x',
             'site': self.site2.pk,
         }
 
-        url = reverse('dcim-api:rackgroup-detail', kwargs={'pk': self.rackgroup1.pk})
+        url = reverse('dcim-api:pod-detail', kwargs={'pk': self.pod1.pk})
         response = self.client.put(url, data, format='json', **self.header)
 
         self.assertHttpStatus(response, status.HTTP_200_OK)
-        self.assertEqual(RackGroup.objects.count(), 3)
-        rackgroup1 = RackGroup.objects.get(pk=response.data['id'])
-        self.assertEqual(rackgroup1.name, data['name'])
-        self.assertEqual(rackgroup1.slug, data['slug'])
-        self.assertEqual(rackgroup1.site_id, data['site'])
+        self.assertEqual(pod.objects.count(), 3)
+        pod1 = pod.objects.get(pk=response.data['id'])
+        self.assertEqual(pod1.name, data['name'])
+        self.assertEqual(pod1.slug, data['slug'])
+        self.assertEqual(pod1.site_id, data['site'])
 
-    def test_delete_rackgroup(self):
+    def test_delete_pod(self):
 
-        url = reverse('dcim-api:rackgroup-detail', kwargs={'pk': self.rackgroup1.pk})
+        url = reverse('dcim-api:pod-detail', kwargs={'pk': self.pod1.pk})
         response = self.client.delete(url, **self.header)
 
         self.assertHttpStatus(response, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(RackGroup.objects.count(), 2)
+        self.assertEqual(pod.objects.count(), 2)
 
 
 class RackRoleTest(APITestCase):
@@ -478,18 +478,18 @@ class RackTest(APITestCase):
 
         self.site1 = Site.objects.create(name='Test Site 1', slug='test-site-1')
         self.site2 = Site.objects.create(name='Test Site 2', slug='test-site-2')
-        self.rackgroup1 = RackGroup.objects.create(site=self.site1, name='Test Rack Group 1', slug='test-rack-group-1')
-        self.rackgroup2 = RackGroup.objects.create(site=self.site2, name='Test Rack Group 2', slug='test-rack-group-2')
+        self.pod1 = pod.objects.create(site=self.site1, name='Test Pod 1', slug='test-pod-1')
+        self.pod2 = pod.objects.create(site=self.site2, name='Test Pod 2', slug='test-pod-2')
         self.rackrole1 = RackRole.objects.create(name='Test Rack Role 1', slug='test-rack-role-1', color='ff0000')
         self.rackrole2 = RackRole.objects.create(name='Test Rack Role 2', slug='test-rack-role-2', color='00ff00')
         self.rack1 = Rack.objects.create(
-            site=self.site1, group=self.rackgroup1, role=self.rackrole1, name='Test Rack 1', u_height=42,
+            site=self.site1, group=self.pod1, role=self.rackrole1, name='Test Rack 1', u_height=42,
         )
         self.rack2 = Rack.objects.create(
-            site=self.site1, group=self.rackgroup1, role=self.rackrole1, name='Test Rack 2', u_height=42,
+            site=self.site1, group=self.pod1, role=self.rackrole1, name='Test Rack 2', u_height=42,
         )
         self.rack3 = Rack.objects.create(
-            site=self.site1, group=self.rackgroup1, role=self.rackrole1, name='Test Rack 3', u_height=42,
+            site=self.site1, group=self.pod1, role=self.rackrole1, name='Test Rack 3', u_height=42,
         )
 
     def test_get_rack(self):
@@ -528,7 +528,7 @@ class RackTest(APITestCase):
         data = {
             'name': 'Test Rack 4',
             'site': self.site1.pk,
-            'group': self.rackgroup1.pk,
+            'group': self.pod1.pk,
             'role': self.rackrole1.pk,
         }
 
@@ -549,19 +549,19 @@ class RackTest(APITestCase):
             {
                 'name': 'Test Rack 4',
                 'site': self.site1.pk,
-                'group': self.rackgroup1.pk,
+                'group': self.pod1.pk,
                 'role': self.rackrole1.pk,
             },
             {
                 'name': 'Test Rack 5',
                 'site': self.site1.pk,
-                'group': self.rackgroup1.pk,
+                'group': self.pod1.pk,
                 'role': self.rackrole1.pk,
             },
             {
                 'name': 'Test Rack 6',
                 'site': self.site1.pk,
-                'group': self.rackgroup1.pk,
+                'group': self.pod1.pk,
                 'role': self.rackrole1.pk,
             },
         ]
@@ -580,7 +580,7 @@ class RackTest(APITestCase):
         data = {
             'name': 'Test Rack X',
             'site': self.site2.pk,
-            'group': self.rackgroup2.pk,
+            'group': self.pod2.pk,
             'role': self.rackrole2.pk,
         }
 

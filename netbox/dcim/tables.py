@@ -7,7 +7,7 @@ from .models import (
     Cable, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate, Device, DeviceBay,
     DeviceBayTemplate, DeviceRole, DeviceType, FrontPort, FrontPortTemplate, Interface, InterfaceTemplate,
     InventoryItem, Manufacturer, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack,
-    RackGroup, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
+    pod, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
 )
 
 REGION_LINK = """
@@ -48,15 +48,15 @@ REGION_ACTIONS = """
 {% endif %}
 """
 
-RACKGROUP_ACTIONS = """
-<a href="{% url 'dcim:rackgroup_changelog' pk=record.pk %}" class="btn btn-default btn-xs" title="Changelog">
+pod_ACTIONS = """
+<a href="{% url 'dcim:pod_changelog' pk=record.pk %}" class="btn btn-default btn-xs" title="Changelog">
     <i class="fa fa-history"></i>
 </a>
 <a href="{% url 'dcim:rack_elevation_list' %}?site={{ record.site.slug }}&group_id={{ record.pk }}" class="btn btn-xs btn-primary" title="View elevations">
     <i class="fa fa-eye"></i>
 </a>
-{% if perms.dcim.change_rackgroup %}
-    <a href="{% url 'dcim:rackgroup_edit' pk=record.pk %}" class="btn btn-xs btn-warning" title="Edit">
+{% if perms.dcim.change_pod %}
+    <a href="{% url 'dcim:pod_edit' pk=record.pk %}" class="btn btn-xs btn-warning" title="Edit">
         <i class="glyphicon glyphicon-pencil"></i>
     </a>
 {% endif %}
@@ -222,10 +222,10 @@ class SiteTable(BaseTable):
 
 
 #
-# Rack groups
+# Pods
 #
 
-class RackGroupTable(BaseTable):
+class podTable(BaseTable):
     pk = ToggleColumn()
     name = tables.LinkColumn()
     site = tables.LinkColumn(
@@ -238,13 +238,13 @@ class RackGroupTable(BaseTable):
     )
     slug = tables.Column()
     actions = tables.TemplateColumn(
-        template_code=RACKGROUP_ACTIONS,
+        template_code=pod_ACTIONS,
         attrs={'td': {'class': 'text-right noprint'}},
         verbose_name=''
     )
 
     class Meta(BaseTable.Meta):
-        model = RackGroup
+        model = pod
         fields = ('pk', 'name', 'site', 'rack_count', 'slug', 'actions')
 
 

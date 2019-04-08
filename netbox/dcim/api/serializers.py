@@ -8,7 +8,7 @@ from dcim.models import (
     Cable, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate, Device, DeviceBay,
     DeviceBayTemplate, DeviceType, DeviceRole, FrontPort, FrontPortTemplate, Interface, InterfaceTemplate,
     Manufacturer, InventoryItem, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack,
-    RackGroup, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
+    pod, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
 )
 from extras.api.customfields import CustomFieldModelSerializer
 from ipam.api.nested_serializers import NestedIPAddressSerializer, NestedVLANSerializer
@@ -88,11 +88,11 @@ class SiteSerializer(TaggitSerializer, CustomFieldModelSerializer):
 # Racks
 #
 
-class RackGroupSerializer(ValidatedModelSerializer):
+class podSerializer(ValidatedModelSerializer):
     site = NestedSiteSerializer()
 
     class Meta:
-        model = RackGroup
+        model = pod
         fields = ['id', 'name', 'slug', 'site']
 
 
@@ -105,7 +105,7 @@ class RackRoleSerializer(ValidatedModelSerializer):
 
 class RackSerializer(TaggitSerializer, CustomFieldModelSerializer):
     site = NestedSiteSerializer()
-    group = NestedRackGroupSerializer(required=False, allow_null=True, default=None)
+    group = NestedpodSerializer(required=False, allow_null=True, default=None)
     tenant = NestedTenantSerializer(required=False, allow_null=True)
     status = ChoiceField(choices=RACK_STATUS_CHOICES, required=False)
     role = NestedRackRoleSerializer(required=False, allow_null=True)

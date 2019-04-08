@@ -26,7 +26,7 @@ from .constants import *
 from .models import (
     Cable, DeviceBay, DeviceBayTemplate, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate,
     Device, DeviceRole, DeviceType, FrontPort, FrontPortTemplate, Interface, InterfaceTemplate, Manufacturer,
-    InventoryItem, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack, RackGroup,
+    InventoryItem, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack, pod,
     RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis
 )
 
@@ -289,14 +289,14 @@ class SiteFilterForm(BootstrapMixin, CustomFieldFilterForm):
 
 
 #
-# Rack groups
+# Pods
 #
 
-class RackGroupForm(BootstrapMixin, forms.ModelForm):
+class podForm(BootstrapMixin, forms.ModelForm):
     slug = SlugField()
 
     class Meta:
-        model = RackGroup
+        model = pod
         fields = [
             'site', 'name', 'slug',
         ]
@@ -307,7 +307,7 @@ class RackGroupForm(BootstrapMixin, forms.ModelForm):
         }
 
 
-class RackGroupCSVForm(forms.ModelForm):
+class podCSVForm(forms.ModelForm):
     site = forms.ModelChoiceField(
         queryset=Site.objects.all(),
         to_field_name='name',
@@ -318,15 +318,15 @@ class RackGroupCSVForm(forms.ModelForm):
     )
 
     class Meta:
-        model = RackGroup
-        fields = RackGroup.csv_headers
+        model = pod
+        fields = pod.csv_headers
         help_texts = {
-            'name': 'Name of rack group',
+            'name': 'Name of Pod',
             'slug': 'URL-friendly slug',
         }
 
 
-class RackGroupFilterForm(BootstrapMixin, forms.Form):
+class podFilterForm(BootstrapMixin, forms.Form):
     site = FilterChoiceField(
         queryset=Site.objects.all(),
         to_field_name='slug',
@@ -369,13 +369,13 @@ class RackRoleCSVForm(forms.ModelForm):
 
 class RackForm(BootstrapMixin, TenancyForm, CustomFieldForm):
     group = ChainedModelChoiceField(
-        queryset=RackGroup.objects.all(),
+        queryset=pod.objects.all(),
         chains=(
             ('site', 'site'),
         ),
         required=False,
         widget=APISelect(
-            api_url='/api/dcim/rack-groups/',
+            api_url='/api/dcim/pods/',
         )
     )
     comments = CommentField()
@@ -422,7 +422,7 @@ class RackCSVForm(forms.ModelForm):
         }
     )
     group_name = forms.CharField(
-        help_text='Name of rack group',
+        help_text='Name of Pod',
         required=False
     )
     tenant = forms.ModelChoiceField(
@@ -483,12 +483,12 @@ class RackCSVForm(forms.ModelForm):
         name = self.cleaned_data.get('name')
         facility_id = self.cleaned_data.get('facility_id')
 
-        # Validate rack group
+        # Validate Pod
         if group_name:
             try:
-                self.instance.group = RackGroup.objects.get(site=site, name=group_name)
-            except RackGroup.DoesNotExist:
-                raise forms.ValidationError("Rack group {} not found for site {}".format(group_name, site))
+                self.instance.group = pod.objects.get(site=site, name=group_name)
+            except pod.DoesNotExist:
+                raise forms.ValidationError("Pod {} not found for site {}".format(group_name, site))
 
             # Validate uniqueness of rack name within group
             if Rack.objects.filter(group=self.instance.group, name=name).exists():
@@ -519,10 +519,10 @@ class RackBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditFor
         )
     )
     group = forms.ModelChoiceField(
-        queryset=RackGroup.objects.all(),
+        queryset=pod.objects.all(),
         required=False,
         widget=APISelect(
-            api_url="/api/dcim/rack-groups",
+            api_url="/api/dcim/pods",
         )
     )
     tenant = forms.ModelChoiceField(
@@ -611,11 +611,11 @@ class RackFilterForm(BootstrapMixin, CustomFieldFilterForm):
         )
     )
     group_id = FilterChoiceField(
-        queryset=RackGroup.objects.select_related('site'),
-        label='Rack group',
+        queryset=pod.objects.select_related('site'),
+        label='Pod',
         null_label='-- None --',
         widget=APISelectMultiple(
-            api_url="/api/dcim/rack-groups/",
+            api_url="/api/dcim/pods/",
             null_option=True,
         )
     )
@@ -703,11 +703,11 @@ class RackReservationFilterForm(BootstrapMixin, forms.Form):
         )
     )
     group_id = FilterChoiceField(
-        queryset=RackGroup.objects.select_related('site'),
-        label='Rack group',
+        queryset=pod.objects.select_related('site'),
+        label='Pod',
         null_label='-- None --',
         widget=APISelectMultiple(
-            api_url="/api/dcim/rack-groups/",
+            api_url="/api/dcim/pods/",
             null_option=True,
         )
     )
@@ -1668,20 +1668,20 @@ class DeviceFilterForm(BootstrapMixin, CustomFieldFilterForm):
             api_url="/api/dcim/sites/",
             value_field="slug",
             filter_for={
-                'rack_group_id': 'site',
+                'pod': 'site',
                 'rack_id': 'site',
             }
         )
     )
-    rack_group_id = FilterChoiceField(
-        queryset=RackGroup.objects.select_related(
+    pod = FilterChoiceField(
+        queryset=pod.objects.select_related(
             'site'
         ),
-        label='Rack group',
+        label='Pod',
         widget=APISelectMultiple(
-            api_url="/api/dcim/rack-groups/",
+            api_url="/api/dcim/pods/",
             filter_for={
-                'rack_id': 'rack_group_id',
+                'rack_id': 'pod',
             }
         )
     )

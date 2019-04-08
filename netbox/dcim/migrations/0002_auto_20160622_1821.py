@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='console_ports', to='dcim.Device'),
         ),
         migrations.AlterUniqueTogether(
-            name='rackgroup',
+            name='pod',
             unique_together=set([('site', 'name'), ('site', 'slug')]),
         ),
         migrations.AlterUniqueTogether(

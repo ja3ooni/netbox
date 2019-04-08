@@ -48,7 +48,7 @@ GRAPH_TYPE_CHOICES = (
 # Models which support export templates
 EXPORTTEMPLATE_MODELS = [
     'provider', 'circuit',                                                          # Circuits
-    'site', 'region', 'rack', 'rackgroup', 'manufacturer', 'devicetype', 'device',  # DCIM
+    'site', 'region', 'rack', 'pod', 'manufacturer', 'devicetype', 'device',  # DCIM
     'consoleport', 'powerport', 'interface', 'cable', 'virtualchassis',             # DCIM
     'aggregate', 'prefix', 'ipaddress', 'vlan', 'vrf', 'service',                   # IPAM
     'secret',                                                                       # Secrets

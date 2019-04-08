@@ -16,12 +16,12 @@ class RackTestCase(TestCase):
             name='TestSite2',
             slug='test-site-2'
         )
-        self.group1 = RackGroup.objects.create(
+        self.group1 = pod.objects.create(
             name='TestGroup1',
             slug='test-group-1',
             site=self.site1
         )
-        self.group2 = RackGroup.objects.create(
+        self.group2 = pod.objects.create(
             name='TestGroup2',
             slug='test-group-2',
             site=self.site2

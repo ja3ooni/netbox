@@ -243,11 +243,11 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong>Rack Groups</strong>
+                <strong>Pods</strong>
             </div>
-            {% if rack_groups %}
+            {% if pod %}
                 <table class="table table-hover panel-body">
-                    {% for rg in rack_groups %}
+                    {% for rg in pod %}
                         <tr>
                             <td><i class="fa fa-fw fa-folder-o"></i> <a href="{{ rg.get_absolute_url }}">{{ rg }}</a></td>
                             <td>{{ rg.rack_count }}</td>

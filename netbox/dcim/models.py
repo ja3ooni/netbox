@@ -390,11 +390,11 @@ class Site(ChangeLoggedModel, CustomFieldModel):
 # Racks
 #
 
-class RackGroup(ChangeLoggedModel):
+class pod(ChangeLoggedModel):
     """
     Racks can be grouped as subsets within a Site. The scope of a group will depend on how Sites are defined. For
-    example, if a Site spans a corporate campus, a RackGroup might be defined to represent each building within that
-    campus. If a Site instead represents a single building, a RackGroup might represent a single room or floor.
+    example, if a Site spans a corporate campus, a pod might be defined to represent each building within that
+    campus. If a Site instead represents a single building, a pod might represent a single room or floor.
     """
     name = models.CharField(
         max_length=50
@@ -403,7 +403,7 @@ class RackGroup(ChangeLoggedModel):
     site = models.ForeignKey(
         to='dcim.Site',
         on_delete=models.CASCADE,
-        related_name='rack_groups'
+        related_name='pod'
     )
 
     csv_headers = ['site', 'name', 'slug']
@@ -419,7 +419,7 @@ class RackGroup(ChangeLoggedModel):
         return self.name
 
     def get_absolute_url(self):
-        return "{}?group_id={}".format(reverse('dcim:rack_list'), self.pk)
+        return "{}?pod_id={}".format(reverse('dcim:rack_list'), self.pk)
 
     def to_csv(self):
         return (
@@ -464,7 +464,7 @@ class RackRole(ChangeLoggedModel):
 class Rack(ChangeLoggedModel, CustomFieldModel):
     """
     Devices are housed within Racks. Each rack has a defined height measured in rack units, and a front and rear face.
-    Each Rack is assigned to a Site and (optionally) a RackGroup.
+    Each Rack is assigned to a Site and (optionally) a pod.
     """
     name = models.CharField(
         max_length=50
@@ -481,7 +481,7 @@ class Rack(ChangeLoggedModel, CustomFieldModel):
         related_name='racks'
     )
     group = models.ForeignKey(
-        to='dcim.RackGroup',
+        to='dcim.pod',
         on_delete=models.SET_NULL,
         related_name='racks',
         blank=True,
@@ -609,7 +609,7 @@ class Rack(ChangeLoggedModel, CustomFieldModel):
             if self.group:
                 if self.group.site != self.site:
                     raise ValidationError({
-                        'group': "Rack group must be from the same site, {}.".format(self.site)
+                        'group': "Pod must be from the same site, {}.".format(self.site)
                     })
 
     def save(self, *args, **kwargs):

@@ -31,7 +31,7 @@ from .models import (
     Cable, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate, Device, DeviceBay,
     DeviceBayTemplate, DeviceRole, DeviceType, FrontPort, FrontPortTemplate, Interface, InterfaceTemplate,
     InventoryItem, Manufacturer, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack,
-    RackGroup, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
+    pod, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
 )
 
 
@@ -200,14 +200,14 @@ class SiteView(View):
             'circuit_count': Circuit.objects.filter(terminations__site=site).count(),
             'vm_count': VirtualMachine.objects.filter(cluster__site=site).count(),
         }
-        rack_groups = RackGroup.objects.filter(site=site).annotate(rack_count=Count('racks'))
+        pod = pod.objects.filter(site=site).annotate(rack_count=Count('racks'))
         topology_maps = TopologyMap.objects.filter(site=site)
         show_graphs = Graph.objects.filter(type=GRAPH_TYPE_SITE).exists()
 
         return render(request, 'dcim/site.html', {
             'site': site,
             'stats': stats,
-            'rack_groups': rack_groups,
+            'pod': pod,
             'topology_maps': topology_maps,
             'show_graphs': show_graphs,
         })
@@ -248,41 +248,41 @@ class SiteBulkEditView(PermissionRequiredMixin, BulkEditView):
 
 
 #
-# Rack groups
+# Pods
 #
 
-class RackGroupListView(ObjectListView):
-    queryset = RackGroup.objects.select_related('site').annotate(rack_count=Count('racks'))
-    filter = filters.RackGroupFilter
-    filter_form = forms.RackGroupFilterForm
-    table = tables.RackGroupTable
-    template_name = 'dcim/rackgroup_list.html'
+class podListView(ObjectListView):
+    queryset = pod.objects.select_related('site').annotate(rack_count=Count('racks'))
+    filter = filters.podFilter
+    filter_form = forms.podFilterForm
+    table = tables.podTable
+    template_name = 'dcim/pod_list.html'
 
 
-class RackGroupCreateView(PermissionRequiredMixin, ObjectEditView):
-    permission_required = 'dcim.add_rackgroup'
-    model = RackGroup
-    model_form = forms.RackGroupForm
-    default_return_url = 'dcim:rackgroup_list'
+class podCreateView(PermissionRequiredMixin, ObjectEditView):
+    permission_required = 'dcim.add_pod'
+    model = pod
+    model_form = forms.podForm
+    default_return_url = 'dcim:pod_list'
 
 
-class RackGroupEditView(RackGroupCreateView):
-    permission_required = 'dcim.change_rackgroup'
+class podEditView(podCreateView):
+    permission_required = 'dcim.change_pod'
 
 
-class RackGroupBulkImportView(PermissionRequiredMixin, BulkImportView):
-    permission_required = 'dcim.add_rackgroup'
-    model_form = forms.RackGroupCSVForm
-    table = tables.RackGroupTable
-    default_return_url = 'dcim:rackgroup_list'
+class podBulkImportView(PermissionRequiredMixin, BulkImportView):
+    permission_required = 'dcim.add_pod'
+    model_form = forms.podCSVForm
+    table = tables.podTable
+    default_return_url = 'dcim:pod_list'
 
 
-class RackGroupBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
-    permission_required = 'dcim.delete_rackgroup'
-    queryset = RackGroup.objects.select_related('site').annotate(rack_count=Count('racks'))
-    filter = filters.RackGroupFilter
-    table = tables.RackGroupTable
-    default_return_url = 'dcim:rackgroup_list'
+class podBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
+    permission_required = 'dcim.delete_pod'
+    queryset = pod.objects.select_related('site').annotate(rack_count=Count('racks'))
+    filter = filters.podFilter
+    table = tables.podTable
+    default_return_url = 'dcim:pod_list'
 
 
 #

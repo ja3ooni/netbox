@@ -11,13 +11,13 @@ from circuits.filters import CircuitFilter, ProviderFilter
 from circuits.models import Circuit, Provider
 from circuits.tables import CircuitTable, ProviderTable
 from dcim.filters import (
-    CableFilter, DeviceFilter, DeviceTypeFilter, RackFilter, RackGroupFilter, SiteFilter, VirtualChassisFilter
+    CableFilter, DeviceFilter, DeviceTypeFilter, RackFilter, podFilter, SiteFilter, VirtualChassisFilter
 )
 from dcim.models import (
-    Cable, ConsolePort, Device, DeviceType, Interface, PowerPort, Rack, RackGroup, Site, VirtualChassis
+    Cable, ConsolePort, Device, DeviceType, Interface, PowerPort, Rack, pod, Site, VirtualChassis
 )
 from dcim.tables import (
-    CableTable, DeviceDetailTable, DeviceTypeTable, RackTable, RackGroupTable, SiteTable, VirtualChassisTable
+    CableTable, DeviceDetailTable, DeviceTypeTable, RackTable, podTable, SiteTable, VirtualChassisTable
 )
 from extras.models import ObjectChange, ReportResult, TopologyMap
 from ipam.filters import AggregateFilter, IPAddressFilter, PrefixFilter, VLANFilter, VRFFilter
@@ -62,11 +62,11 @@ SEARCH_TYPES = OrderedDict((
         'table': RackTable,
         'url': 'dcim:rack_list',
     }),
-    ('rackgroup', {
-        'queryset': RackGroup.objects.select_related('site').annotate(rack_count=Count('racks')),
-        'filter': RackGroupFilter,
-        'table': RackGroupTable,
-        'url': 'dcim:rackgroup_list',
+    ('pod', {
+        'queryset': pod.objects.select_related('site').annotate(rack_count=Count('racks')),
+        'filter': podFilter,
+        'table': podTable,
+        'url': 'dcim:pod_list',
     }),
     ('devicetype', {
         'queryset': DeviceType.objects.select_related('manufacturer').annotate(instance_count=Count('instances')),

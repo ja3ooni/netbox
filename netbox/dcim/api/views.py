@@ -17,7 +17,7 @@ from dcim.models import (
     Cable, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate, Device, DeviceBay,
     DeviceBayTemplate, DeviceRole, DeviceType, FrontPort, FrontPortTemplate, Interface, InterfaceTemplate,
     Manufacturer, InventoryItem, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack,
-    RackGroup, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
+    pod, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
 )
 from extras.api.serializers import RenderedGraphSerializer
 from extras.api.views import CustomFieldModelViewSet
@@ -116,13 +116,13 @@ class SiteViewSet(CustomFieldModelViewSet):
 
 
 #
-# Rack groups
+# Pods
 #
 
-class RackGroupViewSet(ModelViewSet):
-    queryset = RackGroup.objects.select_related('site')
-    serializer_class = serializers.RackGroupSerializer
-    filterset_class = filters.RackGroupFilter
+class podViewSet(ModelViewSet):
+    queryset = pod.objects.select_related('site')
+    serializer_class = serializers.podSerializer
+    filterset_class = filters.podFilter
 
 
 #

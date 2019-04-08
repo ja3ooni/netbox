@@ -230,7 +230,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='RackGroup',
+            name='pod',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
@@ -259,14 +259,14 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name='rackgroup',
+            model_name='pod',
             name='site',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rack_groups', to='dcim.Site'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pod', to='dcim.Site'),
         ),
         migrations.AddField(
             model_name='rack',
             name='group',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='racks', to='dcim.RackGroup'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='racks', to='dcim.pod'),
         ),
         migrations.AddField(
             model_name='rack',

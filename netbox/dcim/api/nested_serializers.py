@@ -3,7 +3,7 @@ from rest_framework import serializers
 from dcim.constants import CONNECTION_STATUS_CHOICES
 from dcim.models import (
     Cable, ConsolePort, ConsoleServerPort, Device, DeviceBay, DeviceType, DeviceRole, FrontPort, FrontPortTemplate,
-    Interface, Manufacturer, Platform, PowerOutlet, PowerPort, Rack, RackGroup, RackRole, RearPort, RearPortTemplate,
+    Interface, Manufacturer, Platform, PowerOutlet, PowerPort, Rack, pod, RackRole, RearPort, RearPortTemplate,
     Region, Site, VirtualChassis,
 )
 from utilities.api import ChoiceField, WritableNestedSerializer
@@ -23,7 +23,7 @@ __all__ = [
     'NestedPlatformSerializer',
     'NestedPowerOutletSerializer',
     'NestedPowerPortSerializer',
-    'NestedRackGroupSerializer',
+    'NestedpodSerializer',
     'NestedRackRoleSerializer',
     'NestedRackSerializer',
     'NestedRearPortSerializer',
@@ -58,11 +58,11 @@ class NestedSiteSerializer(WritableNestedSerializer):
 # Racks
 #
 
-class NestedRackGroupSerializer(WritableNestedSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='dcim-api:rackgroup-detail')
+class NestedpodSerializer(WritableNestedSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='dcim-api:pod-detail')
 
     class Meta:
-        model = RackGroup
+        model = pod
         fields = ['id', 'url', 'name', 'slug']
 
 

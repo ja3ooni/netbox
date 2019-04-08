@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from dcim.constants import CABLE_TYPE_CAT6, IFACE_FF_1GE_FIXED
 from dcim.models import (
-    Cable, Device, DeviceRole, DeviceType, Interface, InventoryItem, Manufacturer, Platform, Rack, RackGroup,
+    Cable, Device, DeviceRole, DeviceType, Interface, InventoryItem, Manufacturer, Platform, Rack, pod,
     RackReservation, RackRole, Site, Region, VirtualChassis,
 )
 
@@ -61,7 +61,7 @@ class SiteTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class RackGroupTestCase(TestCase):
+class podTestCase(TestCase):
 
     def setUp(self):
 
@@ -70,15 +70,15 @@ class RackGroupTestCase(TestCase):
         site = Site(name='Site 1', slug='site-1')
         site.save()
 
-        RackGroup.objects.bulk_create([
-            RackGroup(name='Rack Group 1', slug='rack-group-1', site=site),
-            RackGroup(name='Rack Group 2', slug='rack-group-2', site=site),
-            RackGroup(name='Rack Group 3', slug='rack-group-3', site=site),
+        pod.objects.bulk_create([
+            pod(name='Pod 1', slug='pod-1', site=site),
+            pod(name='Pod 2', slug='pod-2', site=site),
+            pod(name='Pod 3', slug='pod-3', site=site),
         ])
 
-    def test_rackgroup_list(self):
+    def test_pod_list(self):
 
-        url = reverse('dcim:rackgroup_list')
+        url = reverse('dcim:pod_list')
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)

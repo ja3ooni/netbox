@@ -16,7 +16,7 @@ from .models import (
     Cable, ConsolePort, ConsolePortTemplate, ConsoleServerPort, ConsoleServerPortTemplate, Device, DeviceBay,
     DeviceBayTemplate, DeviceRole, DeviceType, FrontPort, FrontPortTemplate, Interface, InterfaceTemplate,
     InventoryItem, Manufacturer, Platform, PowerOutlet, PowerOutletTemplate, PowerPort, PowerPortTemplate, Rack,
-    RackGroup, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
+    pod, RackReservation, RackRole, RearPort, RearPortTemplate, Region, Site, VirtualChassis,
 )
 
 
@@ -98,7 +98,7 @@ class SiteFilter(CustomFieldFilterSet, django_filters.FilterSet):
         return queryset.filter(qs_filter)
 
 
-class RackGroupFilter(NameSlugSearchFilterSet):
+class podFilter(NameSlugSearchFilterSet):
     site_id = django_filters.ModelMultipleChoiceFilter(
         queryset=Site.objects.all(),
         label='Site (ID)',
@@ -111,7 +111,7 @@ class RackGroupFilter(NameSlugSearchFilterSet):
     )
 
     class Meta:
-        model = RackGroup
+        model = pod
         fields = ['site_id', 'name', 'slug']
 
 
@@ -143,12 +143,12 @@ class RackFilter(CustomFieldFilterSet, django_filters.FilterSet):
         label='Site (slug)',
     )
     group_id = django_filters.ModelMultipleChoiceFilter(
-        queryset=RackGroup.objects.all(),
+        queryset=pod.objects.all(),
         label='Group (ID)',
     )
     group = django_filters.ModelMultipleChoiceFilter(
         field_name='group__slug',
-        queryset=RackGroup.objects.all(),
+        queryset=pod.objects.all(),
         to_field_name='slug',
         label='Group',
     )
@@ -224,12 +224,12 @@ class RackReservationFilter(django_filters.FilterSet):
     )
     group_id = django_filters.ModelMultipleChoiceFilter(
         field_name='rack__group',
-        queryset=RackGroup.objects.all(),
+        queryset=pod.objects.all(),
         label='Group (ID)',
     )
     group = django_filters.ModelMultipleChoiceFilter(
         field_name='rack__group__slug',
-        queryset=RackGroup.objects.all(),
+        queryset=pod.objects.all(),
         to_field_name='slug',
         label='Group',
     )
@@ -526,10 +526,10 @@ class DeviceFilter(CustomFieldFilterSet):
         to_field_name='slug',
         label='Site name (slug)',
     )
-    rack_group_id = django_filters.ModelMultipleChoiceFilter(
+    pod = django_filters.ModelMultipleChoiceFilter(
         field_name='rack__group',
-        queryset=RackGroup.objects.all(),
-        label='Rack group (ID)',
+        queryset=pod.objects.all(),
+        label='Pod (ID)',
     )
     rack_id = django_filters.ModelMultipleChoiceFilter(
         field_name='rack',

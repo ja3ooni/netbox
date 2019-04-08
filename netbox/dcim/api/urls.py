@@ -22,7 +22,7 @@ router.register(r'regions', views.RegionViewSet)
 router.register(r'sites', views.SiteViewSet)
 
 # Racks
-router.register(r'rack-groups', views.RackGroupViewSet)
+router.register(r'pods', views.podViewSet)
 router.register(r'rack-roles', views.RackRoleViewSet)
 router.register(r'racks', views.RackViewSet)
 router.register(r'rack-reservations', views.RackReservationViewSet)

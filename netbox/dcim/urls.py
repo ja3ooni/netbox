@@ -6,7 +6,7 @@ from secrets.views import secret_add
 from . import views
 from .models import (
     Cable, ConsolePort, ConsoleServerPort, Device, DeviceRole, DeviceType, FrontPort, Interface, Manufacturer, Platform,
-    PowerPort, PowerOutlet, Rack, RackGroup, RackReservation, RackRole, RearPort, Region, Site, VirtualChassis,
+    PowerPort, PowerOutlet, Rack, pod, RackReservation, RackRole, RearPort, Region, Site, VirtualChassis,
 )
 
 app_name = 'dcim'
@@ -31,13 +31,13 @@ urlpatterns = [
     url(r'^sites/(?P<slug>[\w-]+)/changelog/$', ObjectChangeLogView.as_view(), name='site_changelog', kwargs={'model': Site}),
     url(r'^sites/(?P<object_id>\d+)/images/add/$', ImageAttachmentEditView.as_view(), name='site_add_image', kwargs={'model': Site}),
 
-    # Rack groups
-    url(r'^rack-groups/$', views.RackGroupListView.as_view(), name='rackgroup_list'),
-    url(r'^rack-groups/add/$', views.RackGroupCreateView.as_view(), name='rackgroup_add'),
-    url(r'^rack-groups/import/$', views.RackGroupBulkImportView.as_view(), name='rackgroup_import'),
-    url(r'^rack-groups/delete/$', views.RackGroupBulkDeleteView.as_view(), name='rackgroup_bulk_delete'),
-    url(r'^rack-groups/(?P<pk>\d+)/edit/$', views.RackGroupEditView.as_view(), name='rackgroup_edit'),
-    url(r'^rack-groups/(?P<pk>\d+)/changelog/$', ObjectChangeLogView.as_view(), name='rackgroup_changelog', kwargs={'model': RackGroup}),
+    # Pods
+    url(r'^pods/$', views.podListView.as_view(), name='pod_list'),
+    url(r'^pods/add/$', views.podCreateView.as_view(), name='pod_add'),
+    url(r'^pods/import/$', views.podBulkImportView.as_view(), name='pod_import'),
+    url(r'^pods/delete/$', views.podBulkDeleteView.as_view(), name='pod_bulk_delete'),
+    url(r'^pods/(?P<pk>\d+)/edit/$', views.podEditView.as_view(), name='pod_edit'),
+    url(r'^pods/(?P<pk>\d+)/changelog/$', ObjectChangeLogView.as_view(), name='pod_changelog', kwargs={'model': pod}),
 
     # Rack roles
     url(r'^rack-roles/$', views.RackRoleListView.as_view(), name='rackrole_list'),

@@ -24,6 +24,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='exporttemplate',
             name='content_type',
-            field=models.ForeignKey(limit_choices_to={'model__in': ['provider', 'circuit', 'site', 'region', 'rack', 'rackgroup', 'manufacturer', 'devicetype', 'device', 'consoleport', 'powerport', 'interfaceconnection', 'aggregate', 'prefix', 'ipaddress', 'vlan', 'tenant', 'cluster', 'virtualmachine']}, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType'),
+            field=models.ForeignKey(limit_choices_to={'model__in': ['provider', 'circuit', 'site', 'region', 'rack', 'pod', 'manufacturer', 'devicetype', 'device', 'consoleport', 'powerport', 'interfaceconnection', 'aggregate', 'prefix', 'ipaddress', 'vlan', 'tenant', 'cluster', 'virtualmachine']}, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType'),
         ),
     ]

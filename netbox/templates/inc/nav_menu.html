@@ -88,13 +88,13 @@
                             <a href="{% url 'dcim:rack_list' %}">Racks</a>
                         </li>
                         <li>
-                            {% if perms.dcim.add_rackgroup %}
+                            {% if perms.dcim.add_pod %}
                                 <div class="buttons pull-right">
-                                    <a href="{% url 'dcim:rackgroup_add' %}" class="btn btn-xs btn-success" title="Add"><i class="fa fa-plus"></i></a>
-                                    <a href="{% url 'dcim:rackgroup_import' %}" class="btn btn-xs btn-info" title="Import"><i class="fa fa-download"></i></a>
+                                    <a href="{% url 'dcim:pod_add' %}" class="btn btn-xs btn-success" title="Add"><i class="fa fa-plus"></i></a>
+                                    <a href="{% url 'dcim:pod_import' %}" class="btn btn-xs btn-info" title="Import"><i class="fa fa-download"></i></a>
                                 </div>
                             {% endif %}
-                            <a href="{% url 'dcim:rackgroup_list' %}">Rack Groups</a>
+                            <a href="{% url 'dcim:pod_list' %}">Pods</a>
                         </li>
                         <li>
                             {% if perms.dcim.add_rackrole %}
