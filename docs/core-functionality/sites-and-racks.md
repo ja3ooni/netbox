@@ -34,11 +34,11 @@ A rack must be designated as one of the following types:
 
 Each rack has two faces (front and rear) on which devices can be mounted. Rail-to-rail width may be 19 or 23 inches.
 
-## Rack Groups
+## Pods
 
-Racks can be arranged into groups. As with sites, how you choose to designate rack groups will depend on the nature of your organization. For example, if each site represents a campus, each group might represent a building within a campus. If each site represents a building, each rack group might equate to a floor or room.
+Racks can be arranged into groups. As with sites, how you choose to designate Pods will depend on the nature of your organization. For example, if each site represents a campus, each group might represent a building within a campus. If each site represents a building, each Pod might equate to a floor or room.
 
-Each rack group must be assigned to a parent site. Hierarchical recursion of rack groups is not currently supported.
+Each Pod must be assigned to a parent site. Hierarchical recursion of Pods is not currently supported.
 
 ## Rack Roles
 

@@ -407,7 +407,7 @@ v2.4.4 (2018-08-22)
 * [#2168](https://github.com/digitalocean/netbox/issues/2168) - Added Extreme SummitStack interface form factors
 * [#2356](https://github.com/digitalocean/netbox/issues/2356) - Include cluster site as read-only field in VirtualMachine serializer
 * [#2362](https://github.com/digitalocean/netbox/issues/2362) - Implemented custom admin site to properly handle BASE_PATH
-* [#2254](https://github.com/digitalocean/netbox/issues/2254) - Implemented searchability for Rack Groups
+* [#2254](https://github.com/digitalocean/netbox/issues/2254) - Implemented searchability for Pods
 
 ## Bug Fixes
 
@@ -502,7 +502,7 @@ When an object is created, updated, or deleted, NetBox now automatically records
 * [#2118](https://github.com/digitalocean/netbox/issues/2118) - Added `latitude` and `longitude` fields to Site for GPS coordinates
 * [#2131](https://github.com/digitalocean/netbox/issues/2131) - Added `created` and `last_updated` fields to DeviceType
 * [#2157](https://github.com/digitalocean/netbox/issues/2157) - Fixed natural ordering of objects when sorted by name
-* [#2225](https://github.com/digitalocean/netbox/issues/2225) - Add "view elevations" button for site rack groups
+* [#2225](https://github.com/digitalocean/netbox/issues/2225) - Add "view elevations" button for site Pods
 
 ## Bug Fixes
 
@@ -643,7 +643,7 @@ v2.3.2 (2018-03-22)
 * [#1930](https://github.com/digitalocean/netbox/issues/1930) - Switched to drf-yasg for Swagger API documentation
 * [#1944](https://github.com/digitalocean/netbox/issues/1944) - Enable assigning VLANs to virtual machine interfaces
 * [#1945](https://github.com/digitalocean/netbox/issues/1945) - Implemented a VLAN members view
-* [#1949](https://github.com/digitalocean/netbox/issues/1949) - Added a button to view elevations on rack groups list
+* [#1949](https://github.com/digitalocean/netbox/issues/1949) - Added a button to view elevations on Pods list
 * [#1952](https://github.com/digitalocean/netbox/issues/1952) - Implemented a more robust mechanism for assigning VLANs to interfaces
 
 ## Bug Fixes
@@ -1053,7 +1053,7 @@ v2.1.3 (2017-08-15)
 * [#1330](https://github.com/digitalocean/netbox/issues/1330) - Raise validation error when assigning an unrelated IP as the primary IP for a device
 * [#1389](https://github.com/digitalocean/netbox/issues/1389) - Avoid splitting carat/prefix on prefix list
 * [#1400](https://github.com/digitalocean/netbox/issues/1400) - Removed redundant display of assigned device interface from IP address list
-* [#1414](https://github.com/digitalocean/netbox/issues/1414) - Selecting a site from the rack filters automatically updates the available rack groups
+* [#1414](https://github.com/digitalocean/netbox/issues/1414) - Selecting a site from the rack filters automatically updates the available Pods
 * [#1419](https://github.com/digitalocean/netbox/issues/1419) - Allow editing image attachments without re-uploading an image
 * [#1420](https://github.com/digitalocean/netbox/issues/1420) - Exclude virtual interfaces from device LLDP neighbors view
 * [#1421](https://github.com/digitalocean/netbox/issues/1421) - Improved model validation logic for API serializers
@@ -1742,7 +1742,7 @@ v1.6.2-r1 (2016-10-04)
 ## Bug Fixes
 
 * [#466](https://github.com/digitalocean/netbox/issues/466) - Validate available free space for all instances when increasing the U height of a device type
-* [#571](https://github.com/digitalocean/netbox/issues/571) - Correct rack group filter on device list
+* [#571](https://github.com/digitalocean/netbox/issues/571) - Correct Pod filter on device list
 * [#576](https://github.com/digitalocean/netbox/issues/576) - Delete all relevant CustomFieldValues when deleting a CustomFieldChoice
 * [#581](https://github.com/digitalocean/netbox/issues/581) - Correct initialization of custom boolean and select fields
 * [#591](https://github.com/digitalocean/netbox/issues/591) - Correct display of component creation buttons in device type view
@@ -1830,7 +1830,7 @@ v1.5.0 (2016-08-10)
 
 ### Rack Enhancements ([#180](https://github.com/digitalocean/netbox/issues/180), [#241](https://github.com/digitalocean/netbox/issues/241))
 
-Like devices, racks can now be assigned to functional roles. This allows users to group racks by designated function as well as by physical location (rack groups). Additionally, rack can now have a defined rail-to-rail width (19 or 23 inches) and a type (two-post-rack, cabinet, etc.).
+Like devices, racks can now be assigned to functional roles. This allows users to group racks by designated function as well as by physical location (Pods). Additionally, rack can now have a defined rail-to-rail width (19 or 23 inches) and a type (two-post-rack, cabinet, etc.).
 
 ## Improvements
 
@@ -1968,7 +1968,7 @@ v1.2.2 (2016-07-14)
 ## Improvements
 
 * [#174](https://github.com/digitalocean/netbox/issues/174) - Added search and site filter to provider list
-* [#270](https://github.com/digitalocean/netbox/issues/270) - Added the ability to filter devices by rack group
+* [#270](https://github.com/digitalocean/netbox/issues/270) - Added the ability to filter devices by Pod
 
 ## Bug Fixes
 
